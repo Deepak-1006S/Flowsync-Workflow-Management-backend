@@ -51,7 +51,10 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const payload = req.body;
+    const payload = { ...req.body };
+    if (!payload.id) {
+      delete payload.id;
+    }
     const workflow = new Workflow({ ...payload, updatedAt: new Date() });
     await workflow.save();
     res.status(201).json(workflow);
@@ -62,7 +65,10 @@ router.post('/', async (req, res, next) => {
 
 router.put('/:id', async (req, res, next) => {
   try {
-    const payload = req.body;
+    const payload = { ...req.body };
+    if (!payload.id) {
+      delete payload.id;
+    }
     const workflow = await Workflow.findOneAndUpdate(
       { id: req.params.id },
       { ...payload, updatedAt: new Date() },
